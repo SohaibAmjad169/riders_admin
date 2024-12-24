@@ -46,7 +46,7 @@ export default function Bids() {
     if (!selectedBid) return
     setUpdating(true)
     try {
-      await axios.post(
+      await axios.put(
         `https://rider-rev-baclend.vercel.app/Api/Bid/UpdateBid?id=${selectedBid._id}`,
         { bidStatus: newStatus }
       )

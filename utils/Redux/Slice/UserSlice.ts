@@ -1,17 +1,34 @@
-import { FormData } from '@/utils/Main_Form_Interface'
-import { createSlice } from '@reduxjs/toolkit'
-const initialState = { Name: '', Email: '' }
-export const UserSlice = createSlice({
-  name: 'UserSlice',
+// redux/userSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+interface UserState {
+  id: string | null
+  name: string | null
+  email: string | null
+}
+
+const initialState: UserState = {
+  id: null,
+  name: null,
+  email: null,
+}
+
+export const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
-    SetUser: (state, action) => {
-      ;(state.Email = action.payload.Email), (state.Name = action.payload.Name)
+    setUser: (state, action: PayloadAction<UserState>) => {
+      state.id = action.payload.id
+      state.name = action.payload.name
+      state.email = action.payload.email
     },
-    RemoveUser: (state) => {
-      state.Email = ''
-      state.Name = ''
+    clearUser: (state) => {
+      state.id = null
+      state.name = null
+      state.email = null
     },
   },
 })
-export const { SetUser, RemoveUser } = UserSlice.actions
+
+export const { setUser, clearUser } = userSlice.actions
+export default userSlice.reducer

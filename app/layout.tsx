@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Footer from '@/components/layout/Footer'
+import AdminLayout from '@/components/layout/Header'
+import ReduxLayout from '@/components/layout/ReduxLayout'
 export const metadata: Metadata = {
-  title: 'GLOBAL GRADS CRM',
+  title: 'admin_panel',
   description: 'ADMIN ONLY',
 }
 export default function RootLayout({
@@ -14,15 +17,11 @@ export default function RootLayout({
       <body>
         <div className=" flex flex-col">
           <div className="flex flex-col min-h-screen">
-            {/* <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:top-0 md:left-0 md:h-full bg-slate-800 text-white">
-              <Sidebar />
-            </div> */}
-            {/* <div className="flex-1 flex flex-col md:ml-64"> */}
-            {/* <MobileSideBar /> */}
+            <AdminLayout />
             <main className="flex-1 min-h-screen overflow-y-auto bg-gray-100 ">
-              {children}
+              <ReduxLayout> {children}</ReduxLayout>
             </main>
-            {/* </div> */}
+            <Footer />
           </div>
         </div>
       </body>

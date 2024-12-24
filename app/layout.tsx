@@ -17,7 +17,6 @@ export default function RootLayout({
       <body>
         <div className=" flex flex-col">
           <div className="flex flex-col min-h-screen">
-            <AdminLayout />
             <main className="flex-1 min-h-screen overflow-y-auto bg-gray-100 ">
               <ReduxLayout> {children}</ReduxLayout>
             </main>

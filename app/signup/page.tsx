@@ -22,7 +22,7 @@ export default function SignUp() {
 
     try {
       const response = await axios.post(
-        'https://your-backend-url.com/api/register',
+        'https://rider-rev-baclend.vercel.app/Api/User/CreateUser',
         {
           Name: name,
           Email: email,
@@ -34,6 +34,13 @@ export default function SignUp() {
         const { user } = response.data
         // Dispatch to Redux store
         dispatch(setUser({ id: user._id, name: user.Name, email: user.Email }))
+
+        // Save user data to local storage
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ id: user._id, name: user.Name, email: user.Email })
+        )
+
         // Redirect to another page (e.g., dashboard)
         router.push('/dashboard')
       } else {

@@ -21,7 +21,7 @@ export default function SignIn() {
 
     try {
       const response = await axios.post(
-        'https://your-backend-url.com/api/login',
+        'https://rider-rev-baclend.vercel.app/Api/User/Login',
         {
           Email: email,
           Password: password,
@@ -32,6 +32,13 @@ export default function SignIn() {
         const user = response.data
         // Dispatch user to Redux store
         dispatch(setUser({ id: user._id, name: user.Name, email: user.Email }))
+
+        // Save user data to local storage
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ id: user._id, name: user.Name, email: user.Email })
+        )
+
         // Redirect to another page (e.g., dashboard)
         router.push('/dashboard')
       } else {

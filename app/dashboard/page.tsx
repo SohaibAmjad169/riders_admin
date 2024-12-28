@@ -5,7 +5,6 @@ import axios from 'axios'
 import { BeatLoader } from 'react-spinners'
 import Image from 'next/image'
 
-// Types for bids
 interface Bid {
   _id: string
   bike: {
@@ -20,20 +19,19 @@ interface Bid {
 }
 
 export default function Bids() {
-  const [bids, setBids] = useState<Bid[]>([]) // State to hold fetched bids
-  const [loading, setLoading] = useState<boolean>(false) // Loading state
-  const [updating, setUpdating] = useState<boolean>(false) // Updating state
-  const [selectedBid, setSelectedBid] = useState<Bid | null>(null) // Selected bid for modal
-  const [newStatus, setNewStatus] = useState<string>('') // New status
+  const [bids, setBids] = useState<Bid[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [updating, setUpdating] = useState<boolean>(false)
+  const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
+  const [newStatus, setNewStatus] = useState<string>('')
 
-  // Fetch all bids
   const fetchAllBids = async () => {
     setLoading(true)
     try {
       const response = await axios.get(
         `https://rider-rev-baclend.vercel.app/Api/Bid/GetAllBids`
       )
-      setBids(response.data.bids) // Assuming response.data contains the list of bids
+      setBids(response.data.bids)
     } catch (error) {
       console.error('Error fetching bids:', error)
     } finally {
@@ -41,7 +39,6 @@ export default function Bids() {
     }
   }
 
-  // Update bid status
   const updateBidStatus = async () => {
     if (!selectedBid) return
     setUpdating(true)
@@ -50,13 +47,12 @@ export default function Bids() {
         `https://rider-rev-baclend.vercel.app/Api/Bid/UpdateBid?id=${selectedBid._id}`,
         { bidStatus: newStatus }
       )
-      // Update the bid in local state after successful update
       setBids((prevBids) =>
         prevBids.map((bid) =>
           bid._id === selectedBid._id ? { ...bid, bidStatus: newStatus } : bid
         )
       )
-      setSelectedBid(null) // Close modal
+      setSelectedBid(null)
     } catch (error) {
       console.error('Error updating bid:', error)
     } finally {
@@ -64,21 +60,22 @@ export default function Bids() {
     }
   }
 
-  // Fetch bids on component mount
   useEffect(() => {
     fetchAllBids()
   }, [])
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
-      {/* Header with Logo */}
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 space-y-6">
       <div className="flex items-center justify-center space-x-4">
-        <h1 className="text-6xl font-medium text-yellow-500"> All Bids</h1>
+        <h1 className="text-4xl md:text-6xl font-medium text-yellow-500 text-center">
+          All Bids
+        </h1>
       </div>
 
-      {/* Bids Display */}
       <div className="border p-4 rounded-lg bg-gray-50 space-y-4 shadow-lg">
-        <h2 className="text-xl font-semibold">All Bids</h2>
+        <h2 className="text-lg md:text-xl font-semibold text-center md:text-left">
+          All Bids
+        </h2>
         {loading ? (
           <div className="flex justify-center">
             <BeatLoader color="#0000ff" size={15} />
@@ -87,22 +84,15 @@ export default function Bids() {
           bids.map((bid) => (
             <div
               key={bid._id}
-              className="p-4 border rounded-md bg-white shadow-sm space-y-4"
+              className="p-4 border rounded-md bg-white shadow-sm space-y-4 flex flex-col sm:flex-row sm:space-y-0 sm:space-x-4"
             >
-              {/* Bike Details */}
-              <div className="flex items-center space-x-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-blue-600">
-                    {bid.bike.name}
-                  </h3>
-                  <p className="text-gray-700">
-                    <strong>Price:</strong> ${bid.bike.price}
-                  </p>
-                </div>
-              </div>
-
-              {/* User and Bid Details */}
-              <div className="space-y-2">
+              <div className="flex flex-col items-start space-y-2 sm:w-2/3">
+                <h3 className="text-lg font-semibold text-blue-600">
+                  {bid.bike.name}
+                </h3>
+                <p className="text-gray-700">
+                  <strong>Price:</strong> ${bid.bike.price}
+                </p>
                 <p>
                   <strong>User:</strong> {bid.userName} ({bid.userEmail})
                 </p>
@@ -123,14 +113,15 @@ export default function Bids() {
                     {bid.bidStatus}
                   </span>
                 </p>
+              </div>
 
-                {/* Update Button */}
+              <div className="flex items-center justify-end sm:justify-center sm:w-1/3">
                 <button
                   onClick={() => {
                     setSelectedBid(bid)
-                    setNewStatus(bid.bidStatus) // Pre-fill current status in modal
+                    setNewStatus(bid.bidStatus)
                   }}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition w-full sm:w-auto"
                 >
                   Update
                 </button>
@@ -138,15 +129,16 @@ export default function Bids() {
             </div>
           ))
         ) : (
-          <p className="text-gray-700">No bids available.</p>
+          <p className="text-gray-700 text-center">No bids available.</p>
         )}
       </div>
 
-      {/* Modal */}
       {selectedBid && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 space-y-4">
-            <h3 className="text-xl font-semibold text-center">Update Bid</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
+            <h3 className="text-lg md:text-xl font-semibold text-center">
+              Update Bid
+            </h3>
             <p>
               <strong>Bike:</strong> {selectedBid.bike.name}
             </p>
@@ -169,7 +161,6 @@ export default function Bids() {
               </span>
             </p>
 
-            {/* Status Input */}
             <select
               value={newStatus}
               onChange={(e) => setNewStatus(e.target.value)}
@@ -180,7 +171,6 @@ export default function Bids() {
               <option value="Rejected">Rejected</option>
             </select>
 
-            {/* Action Buttons */}
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setSelectedBid(null)}

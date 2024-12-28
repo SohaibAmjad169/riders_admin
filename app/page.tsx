@@ -71,23 +71,6 @@ export default function Bids() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      {/* Header with Logo */}
-      <div className="flex items-center justify-center space-x-4">
-        <Image
-          width={50}
-          height={50}
-          src="/Logo-black.png"
-          alt="Rider Revolution Logo"
-          className="h-12"
-        />
-        <div className="text-center">
-          <h1 className="text-2xl font-semibold text-blue-600">
-            Rider Revolution
-          </h1>
-          <h2 className="text-xl font-medium text-yellow-500">Bids</h2>
-        </div>
-      </div>
-
       {/* Bids Display */}
       <div className="border p-4 rounded-lg bg-gray-50 space-y-4 shadow-lg">
         <h2 className="text-xl font-semibold">All Bids</h2>

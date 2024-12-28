@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { usePathname } from 'next/navigation'
 import SignIn from '@/app/signin/page'
 import { setUser } from '@/utils/Redux/Slice/UserSlice'
+import Navbar from './Navbar'
 
 const ConditionalLayout = ({ children }: { children: React.ReactNode }) => {
   const user = useSelector((state: RootState) => state.user)
@@ -42,7 +43,7 @@ const ConditionalLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return user.email ? (
-    <div className="flex bg-white min-h-screen w-[100vw]">
+    <div className="flex bg-white min-h-screen w-[100vw] flex-col">
       <div className="flex-1">{!isAuthPage ? children : <SignIn />}</div>
     </div>
   ) : (

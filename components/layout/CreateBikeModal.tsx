@@ -1,5 +1,6 @@
 'use client'
 
+import { createBike } from '@/functions/CreateBike'
 import React, { useState } from 'react'
 
 const CreateBikeModal = () => {
@@ -8,9 +9,9 @@ const CreateBikeModal = () => {
   // State for form fields
   const [bikeData, setBikeData] = useState({
     name: '',
-    price: 0,
+    price: 0, // Set default to 0 as a number
     imageUrl: '',
-    rating: 0,
+    rating: 0, // Set default to 0 as a number
     engine: '',
     petrolCapacity: 0,
     starting: '',
@@ -33,7 +34,24 @@ const CreateBikeModal = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    setBikeData((prev) => ({ ...prev, [name]: value }))
+
+    setBikeData((prev) => ({
+      ...prev,
+      [name]: [
+        'price',
+        'rating',
+        'petrolCapacity',
+        'groundClearance',
+        'displacement',
+        'seatHeight',
+        'length',
+        'width',
+        'height',
+        'weight',
+      ].includes(name)
+        ? Number(value) // Convert numeric fields to numbers
+        : value,
+    }))
   }
 
   const handleAddQuestion = () => {
@@ -54,10 +72,24 @@ const CreateBikeModal = () => {
     setBikeData((prev) => ({ ...prev, questions: updatedQuestions }))
   }
 
-  const handleSubmit = () => {
-    console.log('Bike Data Submitted:', bikeData)
-    // Add your API call to create a bike here
-    setShowModal(false)
+  const handleSubmit = async () => {
+    if (bikeData.price <= 0) {
+      alert('Price must be a positive number.')
+      return
+    }
+    if (bikeData.rating < 0 || bikeData.rating > 5) {
+      alert('Rating must be between 0 and 5.')
+      return
+    }
+
+    try {
+      console.log('Bike Data Submitted:', bikeData)
+      const Data = await createBike(bikeData)
+      setShowModal(false)
+    } catch (error) {
+      console.error('Error:', error)
+      alert(error)
+    }
   }
 
   return (
@@ -92,6 +124,8 @@ const CreateBikeModal = () => {
                   value={bikeData.price}
                   onChange={handleChange}
                   className="w-full p-2 border rounded focus:outline-none"
+                  min="1"
+                  step="0.01"
                 />
               </div>
               <div>
@@ -112,6 +146,8 @@ const CreateBikeModal = () => {
                   value={bikeData.rating}
                   onChange={handleChange}
                   className="w-full p-2 border rounded focus:outline-none"
+                  min="0"
+                  max="5"
                 />
               </div>
               <div>

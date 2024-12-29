@@ -1,11 +1,14 @@
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
-export const removeBike = async (ID: string, Email: string) => {
+export const removeBike = async (ID: string) => {
   try {
-    const response = await axios.delete('/api/bikes/remove', {
-      data: { ID, Email },
-    })
+    const response = await axios.delete(
+      `https://rider-rev-baclend.vercel.app/Api/Bike/RemoveBike?ID=${ID}`
+    )
     console.log('Bike removed successfully:', response.data)
+    toast.success('Bike Has Been Deleted')
+    window.location.reload()
     return response.data
   } catch (error: any) {
     console.error(

@@ -4,6 +4,7 @@ interface Question {
 }
 
 export interface Bike {
+  _id: string
   name: string
   price: number
   imageUrl: string

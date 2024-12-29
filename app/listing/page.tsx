@@ -2,6 +2,7 @@
 import CreateBikeModal from '@/components/layout/CreateBikeModal'
 import UpdateBikeModal from '@/components/layout/UpdateModal'
 import { GetAllBikess } from '@/functions/GetAllBikes'
+import { removeBike } from '@/functions/RemoveBike'
 import { Bike } from '@/utils/BikeInterface'
 import React, { useEffect, useState } from 'react'
 
@@ -23,11 +24,8 @@ const Listing = () => {
     setUpdateModalOpen(true)
   }
 
-  const handleBikeUpdate = async (updatedBike: Bike) => {
-    // Add logic to call API and update the bike
-    console.log('Updating bike:', updatedBike)
-    setUpdateModalOpen(false)
-    // Optionally refresh the bike list
+  const DeleteBike = async (ID: string) => {
+    const Data = await removeBike(ID)
   }
 
   return (
@@ -69,7 +67,7 @@ const Listing = () => {
             {/* Action Buttons */}
             <div className="flex justify-between">
               <button
-                onClick={() => handleUpdateBike(bike)}
+                onClick={() => DeleteBike(bike._id)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
               >
                 Update

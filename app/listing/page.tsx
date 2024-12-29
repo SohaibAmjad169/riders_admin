@@ -3,8 +3,10 @@ import CreateBikeModal from '@/components/layout/CreateBikeModal'
 import UpdateBikeModal from '@/components/layout/UpdateModal'
 import { GetAllBikess } from '@/functions/GetAllBikes'
 import { removeBike } from '@/functions/RemoveBike'
+import { updateBike } from '@/functions/UpdateBike'
 import { Bike } from '@/utils/BikeInterface'
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 const Listing = () => {
   const [AllBikes, SetBikes] = useState<Bike[]>([])
@@ -19,13 +21,33 @@ const Listing = () => {
     GetAllBikes()
   }, [])
 
-  const handleUpdateBike = (bike: Bike) => {
+  const DeleteBike = async (ID: string) => {
+    const Data = await removeBike(ID)
+    if (Data) {
+      toast.success('Bike has been deleted')
+      SetBikes((prev) => prev.filter((bike) => bike._id !== ID))
+    }
+  }
+
+  const handleOpenUpdateModal = (bike: Bike) => {
     setSelectedBike(bike)
     setUpdateModalOpen(true)
   }
 
-  const DeleteBike = async (ID: string) => {
-    const Data = await removeBike(ID)
+  const handleUpdateBike = async (updatedBike: Bike) => {
+    if (!selectedBike) return
+
+    const Data = await updateBike(selectedBike._id, updatedBike)
+    if (Data) {
+      toast.success('Bike has been updated')
+      SetBikes((prev) =>
+        prev.map((bike) =>
+          bike._id === selectedBike._id ? { ...bike, ...updatedBike } : bike
+        )
+      )
+      setUpdateModalOpen(false)
+      setSelectedBike(null)
+    }
   }
 
   return (
@@ -39,7 +61,7 @@ const Listing = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {AllBikes.map((bike) => (
           <div
-            key={bike.name}
+            key={bike._id}
             className="border rounded-lg p-4 shadow-lg bg-white space-y-4"
           >
             {/* Bike Image */}
@@ -67,13 +89,13 @@ const Listing = () => {
             {/* Action Buttons */}
             <div className="flex justify-between">
               <button
-                onClick={() => DeleteBike(bike._id)}
+                onClick={() => handleOpenUpdateModal(bike)}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
               >
                 Update
               </button>
               <button
-                onClick={() => console.log(`Delete bike: ${bike.name}`)}
+                onClick={() => DeleteBike(bike._id)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
               >
                 Delete
@@ -88,6 +110,7 @@ const Listing = () => {
         isOpen={isUpdateModalOpen}
         bike={selectedBike}
         onClose={() => setUpdateModalOpen(false)}
+        onUpdate={handleUpdateBike}
       />
     </div>
   )

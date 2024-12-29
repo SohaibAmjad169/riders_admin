@@ -1,31 +1,53 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 interface UpdateBikeModalProps {
   isOpen: boolean
-  bike: { name: string; price: number; imageUrl: string } | null
+  bike: { name: string; price: number; imageUrl: string; rating: number } | null
   onClose: () => void
+  onUpdate: any
 }
 
 const UpdateBikeModal: React.FC<UpdateBikeModalProps> = ({
   isOpen,
   bike,
   onClose,
+  onUpdate,
 }) => {
   const [formData, setFormData] = useState({
-    name: bike?.name || '',
-    price: bike?.price || 0,
-    imageUrl: bike?.imageUrl || '',
+    name: '',
+    price: 0,
+    imageUrl: '',
+    rating: 0, // Include rating
   })
+
+  useEffect(() => {
+    if (bike) {
+      setFormData({
+        name: bike.name,
+        price: bike.price,
+        imageUrl: bike.imageUrl,
+        rating: bike.rating, // Prefill rating
+      })
+    }
+  }, [bike])
 
   if (!isOpen) return null
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData({ ...formData, [name]: name === 'price' ? +value : value })
+    setFormData({
+      ...formData,
+      [name]: name === 'price' || name === 'rating' ? +value : value,
+    })
   }
 
   const handleSubmit = () => {
-    onClose()
+    if (formData.rating < 1 || formData.rating > 5) {
+      toast.error('Rating must be between 1 and 5')
+      return
+    }
+    onUpdate(formData)
   }
 
   return (
@@ -56,6 +78,14 @@ const UpdateBikeModal: React.FC<UpdateBikeModalProps> = ({
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           placeholder="Image URL"
+        />
+        <input
+          type="number"
+          name="rating"
+          value={formData.rating}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+          placeholder="Rating (1-5)"
         />
 
         <div className="flex justify-end space-x-2">

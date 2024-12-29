@@ -6,9 +6,7 @@ export const removeBike = async (ID: string) => {
     const response = await axios.delete(
       `https://rider-rev-baclend.vercel.app/Api/Bike/RemoveBike?ID=${ID}`
     )
-    console.log('Bike removed successfully:', response.data)
-    toast.success('Bike Has Been Deleted')
-    window.location.reload()
+
     return response.data
   } catch (error: any) {
     console.error(

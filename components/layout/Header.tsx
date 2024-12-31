@@ -47,6 +47,9 @@ export default function AdminLayout() {
             <a href="/listing" className="hover:text-gray-300 transition">
               Listing
             </a>
+            <a href="/allorders" className="hover:text-gray-300 transition">
+              All Orders
+            </a>
           </nav>
 
           {/* User Info and Sign Out/Login */}

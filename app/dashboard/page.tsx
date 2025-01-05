@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BeatLoader } from 'react-spinners'
 import Image from 'next/image'
+import SDK from './../../config';
 
 interface Bid {
   _id: string
@@ -29,7 +30,7 @@ export default function Bids() {
     setLoading(true)
     try {
       const response = await axios.get(
-        `https://rider-rev-baclend.vercel.app/Api/Bid/GetAllBids`
+        `${SDK.BASE_URL}/Bid/GetAllBids`
       )
       setBids(response.data.bids)
     } catch (error) {
@@ -44,7 +45,7 @@ export default function Bids() {
     setUpdating(true)
     try {
       await axios.post(
-        `https://rider-rev-baclend.vercel.app/Api/Bid/UpdateBid?id=${selectedBid._id}`,
+        `${SDK.BASE_URL}/Bid/UpdateBid?id=${selectedBid._id}`,
         { bidStatus: newStatus }
       )
       setBids((prevBids) =>
@@ -81,18 +82,13 @@ export default function Bids() {
             <BeatLoader color="#0000ff" size={15} />
           </div>
         ) : bids.length > 0 ? (
-          bids.map((bid) => (
+          bids && bids.map((bid) => (
             <div
               key={bid._id}
               className="p-4 border rounded-md bg-white shadow-sm space-y-4 flex flex-col sm:flex-row sm:space-y-0 sm:space-x-4"
             >
               <div className="flex flex-col items-start space-y-2 sm:w-2/3">
-                <h3 className="text-lg font-semibold text-blue-600">
-                  {bid.bike.name}
-                </h3>
-                <p className="text-gray-700">
-                  <strong>Price:</strong> ${bid.bike.price}
-                </p>
+                
                 <p>
                   <strong>User:</strong> {bid.userName} ({bid.userEmail})
                 </p>
@@ -102,13 +98,12 @@ export default function Bids() {
                 <p>
                   <strong>Status:</strong>{' '}
                   <span
-                    className={`${
-                      bid.bidStatus === 'Accepted'
+                    className={`${bid.bidStatus === 'Accepted'
                         ? 'text-green-600'
                         : bid.bidStatus === 'Rejected'
-                        ? 'text-red-600'
-                        : 'text-yellow-600'
-                    } font-semibold`}
+                          ? 'text-red-600'
+                          : 'text-yellow-600'
+                      } font-semibold`}
                   >
                     {bid.bidStatus}
                   </span>
@@ -140,22 +135,18 @@ export default function Bids() {
               Update Bid
             </h3>
             <p>
-              <strong>Bike:</strong> {selectedBid.bike.name}
-            </p>
-            <p>
               <strong>User:</strong> {selectedBid.userName} (
               {selectedBid.userEmail})
             </p>
             <p>
               <strong>Current Status:</strong>{' '}
               <span
-                className={`${
-                  selectedBid.bidStatus === 'Accepted'
+                className={`${selectedBid.bidStatus === 'Accepted'
                     ? 'text-green-600'
                     : selectedBid.bidStatus === 'Rejected'
-                    ? 'text-red-600'
-                    : 'text-yellow-600'
-                } font-semibold`}
+                      ? 'text-red-600'
+                      : 'text-yellow-600'
+                  } font-semibold`}
               >
                 {selectedBid.bidStatus}
               </span>

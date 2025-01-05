@@ -9,9 +9,9 @@ const CreateBikeModal = () => {
   // State for form fields
   const [bikeData, setBikeData] = useState({
     name: '',
-    price: 0, // Set default to 0 as a number
+    price: 0, 
     imageUrl: '',
-    rating: 0, // Set default to 0 as a number
+    rating: 0, 
     engine: '',
     petrolCapacity: 0,
     starting: '',

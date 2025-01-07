@@ -7,6 +7,8 @@ import { updateBike } from '@/functions/UpdateBike'
 import { Bike } from '@/utils/BikeInterface'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import SDK from '@/config'
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'
 
 const Listing = () => {
   const [AllBikes, SetBikes] = useState<Bike[]>([])
@@ -52,66 +54,67 @@ const Listing = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      {/* Create Bike Button */}
-      <div className="flex justify-end">
+      <div className="flex justify-end  me-5">
         <CreateBikeModal />
       </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4  space-y-6">
+        <div className="overflow-x-auto shadow-lg rounded-lg">
+          <table className="w-full border-collapse table-auto bg-white rounded-lg overflow-hidden">
+            <thead className="bg-gradient-to-r from-blue-600 to-purple-500 text-white">
+              <tr>
+                <th className="px-4 py-3 text-left">Image</th>
+                <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3 text-left">Price</th>
+                <th className="px-4 py-3 text-left">Rating</th>
+                <th className="px-4 py-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {AllBikes.map((bike) => (
+                <tr
+                  key={bike._id}
+                  className="hover:bg-gray-100 border-b transition duration-200"
+                >
+                  <td className="px-4 py-3">
+                    <img
+                      src={`${SDK.IMAGES_URL}/${bike.image}`}
+                      alt={bike.name}
+                      className="w-16 h-16 object-contain mx-auto rounded-lg"
+                    />
+                  </td>
+                  <td className="px-4 py-3 text-gray-800 font-medium">
+                    {bike.name}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">Rs {bike.price}</td>
+                  <td className="px-4 py-3 text-gray-600">{bike.rating} ⭐</td>
+                  <td className="px-4 py-3 mt-4 text-center flex justify-center space-x-4">
+                    <button
+                      onClick={() => handleOpenUpdateModal(bike)}
+                      className="px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition"
+                    >
+                      <AiOutlineEdit size={20} />
+                    </button>
+                    <button
+                      onClick={() => DeleteBike(bike._id)}
+                      className="px-3 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition"
+                    >
+                      <AiOutlineDelete size={20} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      {/* Bikes Listing */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {AllBikes.map((bike) => (
-          <div
-            key={bike._id}
-            className="border rounded-lg p-4 shadow-lg bg-white space-y-4"
-          >
-            {/* Bike Image */}
-            <div className="flex justify-center">
-              <img
-                src={bike.imageUrl}
-                alt={bike.name}
-                className="w-full h-40 object-contain rounded-lg"
-              />
-            </div>
-
-            {/* Bike Details */}
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-blue-600">
-                {bike.name}
-              </h3>
-              <p className="text-gray-700">
-                <strong>Price:</strong> Rs {bike.price}
-              </p>
-              <p className="text-gray-700">
-                <strong>Rating:</strong> {bike.rating} ⭐
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex justify-between">
-              <button
-                onClick={() => handleOpenUpdateModal(bike)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-              >
-                Update
-              </button>
-              <button
-                onClick={() => DeleteBike(bike._id)}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+        <UpdateBikeModal
+          isOpen={isUpdateModalOpen}
+          bike={selectedBike}
+          onClose={() => setUpdateModalOpen(false)}
+          onUpdate={handleUpdateBike}
+        />
       </div>
-
-      {/* Update Bike Modal */}
-      <UpdateBikeModal
-        isOpen={isUpdateModalOpen}
-        bike={selectedBike}
-        onClose={() => setUpdateModalOpen(false)}
-        onUpdate={handleUpdateBike}
-      />
     </div>
   )
 }

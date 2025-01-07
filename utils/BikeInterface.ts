@@ -7,7 +7,7 @@ export interface Bike {
   _id: string
   name: string
   price: number
-  imageUrl: string
+  image: string
   rating: number
   engine: string
   petrolCapacity: number

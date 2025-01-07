@@ -3,7 +3,7 @@ import toast from 'react-hot-toast'
 
 interface UpdateBikeModalProps {
   isOpen: boolean
-  bike: { name: string; price: number; imageUrl: string; rating: number } | null
+  bike: { name: string; price: number; rating: number } | null
   onClose: () => void
   onUpdate: any
 }
@@ -17,8 +17,7 @@ const UpdateBikeModal: React.FC<UpdateBikeModalProps> = ({
   const [formData, setFormData] = useState({
     name: '',
     price: 0,
-    imageUrl: '',
-    rating: 0, // Include rating
+    rating: 0, 
   })
 
   useEffect(() => {
@@ -26,8 +25,7 @@ const UpdateBikeModal: React.FC<UpdateBikeModalProps> = ({
       setFormData({
         name: bike.name,
         price: bike.price,
-        imageUrl: bike.imageUrl,
-        rating: bike.rating, // Prefill rating
+        rating: bike.rating, 
       })
     }
   }, [bike])
@@ -70,14 +68,6 @@ const UpdateBikeModal: React.FC<UpdateBikeModalProps> = ({
           onChange={handleInputChange}
           className="w-full p-2 border rounded"
           placeholder="Bike Price"
-        />
-        <input
-          type="text"
-          name="imageUrl"
-          value={formData.imageUrl}
-          onChange={handleInputChange}
-          className="w-full p-2 border rounded"
-          placeholder="Image URL"
         />
         <input
           type="number"

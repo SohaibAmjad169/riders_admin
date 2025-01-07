@@ -16,8 +16,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className=" flex flex-col">
-          <div className="flex flex-col min-h-screen">
-            <main className="flex-1 min-h-screen overflow-y-auto bg-gray-100 ">
+          <div className="flex flex-col min-h-screen overflow-x-hidden">
+            <main className=" ">
               <ReduxLayout> {children}</ReduxLayout>
             </main>
             <Footer />

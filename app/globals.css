@@ -141,19 +141,4 @@
   width: 4px; /* Sets the scrollbar width */
 }
 
-/* Track of the scrollbar */
-::-webkit-scrollbar-track {
-  background: yellow; /* A light background color for the track */
-  border-radius: 2px;
-}
 
-/* Handle of the scrollbar */
-::-webkit-scrollbar-thumb {
-  background: blue; /* Blue to yellow gradient */
-  border-radius: 2px; /* Rounded corners for a sleek look */
-}
-
-/* Handle hover effect */
-::-webkit-scrollbar-thumb:hover {
-  background: blue; /* Darker shade on hover */
-}

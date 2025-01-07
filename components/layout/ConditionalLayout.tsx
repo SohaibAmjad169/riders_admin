@@ -16,11 +16,9 @@ const ConditionalLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsClient(true)
 
-    // Check if user data exists in localStorage
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser)
-      // Dispatch the user data to the Redux store
       dispatch(
         setUser({
           id: parsedUser.id,

@@ -58,7 +58,6 @@ export default function Bids() {
     }
   }
 
-  console.log({bids});
   
   useEffect(() => {
     fetchAllBids()
@@ -95,7 +94,7 @@ export default function Bids() {
                     <h3 className="text-lg font-semibold text-gray-800">
                       {bid.bike.name}
                     </h3>
-                    <p className="text-gray-500 text-sm">${bid.bike.price}</p>
+                    <p className="text-gray-500 text-sm">PKR {bid.bidAmount}</p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-gray-700">
@@ -103,7 +102,7 @@ export default function Bids() {
                       <span className="text-gray-500">{bid.userEmail}</span>)
                     </p>
                     <p className="text-gray-700">
-                      <strong>Bid Amount:</strong> ${bid.bidAmount}
+                      <strong>Bid Amount:</strong> PKR :{bid.bidAmount}
                     </p>
                     <p>
                       <strong>Status:</strong>{' '}
